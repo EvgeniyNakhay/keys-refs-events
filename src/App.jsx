@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import List from "./components/List";
 
@@ -56,10 +56,44 @@ function App() {
       completed: false,
     },
   ];
+  const [inputValue, setInputValue] = useState(null);
+  const [arrayItem, setArrayItem] = useState(array);
+
+  const inputRef = useRef();
+  const focusInput = () => {
+    inputRef.current.focus();
+  };
+
+  function handleClick(e) {
+    setInputValue(e.target.value);
+  }
+
+  function handleSubmit(e) {
+    if (e.key === "Enter" && inputValue.trim() !== "") {
+      console.log(inputValue);
+      console.log(arrayItem);
+      setArrayItem([
+        ...arrayItem,
+        {
+          userId: 1,
+          id: 2,
+          title: { inputValue },
+          completed: false,
+        },
+      ]);
+    }
+  }
 
   return (
     <>
-      <List items={array} />
+      <input
+        ref={inputRef}
+        type="text"
+        onChange={(e) => handleClick(e)}
+        onKeyDown={(e) => handleSubmit(e)}
+      />
+      <button onClick={focusInput}>Click</button>
+      <List items={arrayItem} />
     </>
   );
 }
