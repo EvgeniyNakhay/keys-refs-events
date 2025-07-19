@@ -1,15 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 
 export default function List({ items }) {
   function handleExclamationMark(id) {
     items.map((item) => {
       if (item.id === id) {
-        console.log(item.title);
-        return { ...item, title: "!!!" };
+        return { ...item, title: "!!!" + title };
       }
       return item;
     });
   }
+
+  const prevCount = useRef();
 
   return (
     <ul>
