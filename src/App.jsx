@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import List from "./components/List";
+import { v4 as uuidv4 } from "uuid";
 
 function App() {
-  const [arrayTodos, setArrayTodos] = useState(null);
-
   // async function fetchData() {
   //   try {
   //     const response = await fetch(
@@ -56,31 +55,30 @@ function App() {
       completed: false,
     },
   ];
-  const [inputValue, setInputValue] = useState(null);
-  const [arrayItem, setArrayItem] = useState(array);
+  const [inputValue, setInputValue] = useState("");
+  const [arrayItems, setArrayItem] = useState(array);
 
   const inputRef = useRef();
   const focusInput = () => {
     inputRef.current.focus();
   };
 
-  function handleClick(e) {
+  function handleChange(e) {
     setInputValue(e.target.value);
   }
 
   function handleSubmit(e) {
     if (e.key === "Enter" && inputValue.trim() !== "") {
-      console.log(inputValue);
-      console.log(arrayItem);
       setArrayItem([
-        ...arrayItem,
         {
           userId: 1,
-          id: 2,
-          title: { inputValue },
+          id: uuidv4(),
+          title: inputValue,
           completed: false,
         },
+        ...arrayItems,
       ]);
+      setInputValue("");
     }
   }
 
@@ -89,11 +87,12 @@ function App() {
       <input
         ref={inputRef}
         type="text"
-        onChange={(e) => handleClick(e)}
+        value={inputValue}
+        onChange={(e) => handleChange(e)}
         onKeyDown={(e) => handleSubmit(e)}
       />
       <button onClick={focusInput}>Click</button>
-      <List items={arrayItem} />
+      <List items={arrayItems} />
     </>
   );
 }
