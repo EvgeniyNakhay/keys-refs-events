@@ -1,24 +1,26 @@
 import { useEffect, useReducer, useRef, useState } from "react";
 
-export default function List({ items }) {
-  function handleExclamationMark(id) {
-    items.map((item) => {
+export default function List({ todos, setTodos }) {
+  const handleAddExlamationSign = (id) => {
+    const newArray = todos.map((item) => {
       if (item.id === id) {
-        return { ...item, title: "!!!" + title };
+        return { ...item, title: "!!!" + item.title };
+      } else {
+        return item;
       }
-      return item;
     });
-  }
-
-  const prevCount = useRef();
+    setTodos(newArray);
+  };
 
   return (
     <ul>
-      {items.map((item) => {
+      {todos.map((item) => {
         return (
           <li key={item.id}>
             {item.title}
-            <button onClick={() => handleExclamationMark(item.id)}>!!!</button>
+            <button onClick={() => handleAddExlamationSign(item.id)}>
+              add "!!!"
+            </button>
           </li>
         );
       })}
